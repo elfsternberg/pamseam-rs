@@ -3,4 +3,4 @@
 extern crate image;
 pub mod energy;
 
-pub use energy::{compute_energy, energy_to_image};
+pub use energy::{energy_to_horizontal_seam, energy_to_vertical_seam};
