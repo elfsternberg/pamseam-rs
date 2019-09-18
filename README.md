@@ -55,8 +55,8 @@ JPEGs are rendered as pixels for purposes of editing.)
 
 The steps therefore are:
 
-Image -> Energy Map -> Seam Collection -> Lowest Energy Seam
-LowestEnergySeam + Image -> New Image
+- Image -> Energy Map -> Seam Collection -> Lowest Energy Seam
+- LowestEnergySeam + Image -> New Image
 
 Challenges:
 
