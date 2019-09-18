@@ -46,6 +46,36 @@ processes them from highest to lowest energy, for each creating an
 interstitial seam that is the average of its neighbors.  As with
 downsizing, this can create significant distortion.
 
+## Project interim notes
+
+The basic premise of this program is that a picture file is a collection
+of pixels.  (This isn't necessarily true for some image formats, most
+notoriously JPEG, but it's true enough to make it worthwhile, and even
+JPEGs are rendered as pixels for purposes of editing.)
+
+The steps therefore are:
+
+Image -> Energy Map -> Seam Collection -> Lowest Energy Seam
+LowestEnergySeam + Image -> New Image
+
+Challenges:
+
+Images aren't generic.  They came in Luma (greyscale) and RGB formats,
+along with their alpha channel variants.  For our purposes, we're not
+going to handle alpha channel, since the alpha channel doesn't make
+sense for our purposes.  Mapping from/to the image in a generic way 
+is our biggest headache.
+
+The task isn't generic, either.  The image can be read-only, but we can
+only work with so much in a thread-based fashion.
+
+The other challenge is just the number of different integer types
+involved in doing this work.  image-rs indexes the (x, y) pair of any
+image as u32, but we know damn well that under the covers it's really a
+usize-mapped index into a vec.  Making that work repeatedly is the big
+challenge.
+
+
 ## Features
 
 There are two features not enabled by default.
