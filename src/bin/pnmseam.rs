@@ -5,7 +5,7 @@ extern crate clap;
 extern crate image;
 
 use clap::{App, Arg};
-use image::{ColorType};
+use image::ColorType;
 
 fn main() {
     let matches = App::new("pnmseam")
