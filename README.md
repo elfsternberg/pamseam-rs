@@ -77,9 +77,8 @@ challenge.
 
 ## TODO
 
-- Make "energytoseam" a trait.
-- Separate the trait into its own module.
 - Write AviShaTwo (forward energy)
+- Actually implement pamseam arguments in clap!
 - Look at other algorithms in AviShaOne
 - implement caching.
 - implement hori/vert mirrors.
