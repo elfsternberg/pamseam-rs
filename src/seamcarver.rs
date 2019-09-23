@@ -13,7 +13,7 @@
 // the horizontal seams will give us nightmares when we start trying
 // to multithread this beast.
 
-use crate::energy::{calculate_horizontal_seam, calculate_vertical_seam};
+use crate::energy::{AviShaOne, ImageSeams};
 use image::{GenericImageView, ImageBuffer, Pixel, Primitive};
 
 // The one tiny inefficiency here is that the seam is copied, into the
@@ -85,10 +85,12 @@ where
     S: Primitive + 'static,
 {
     if direction == Carve::Height {
-        let seam = calculate_horizontal_seam(image);
+        let carver = AviShaOne::new(image);
+        let seam = carver.horizontal_seam();
         remove_horizontal_seam(image, &seam)
     } else {
-        let seam = calculate_vertical_seam(image);
+        let carver = AviShaOne::new(image);
+        let seam = carver.vertical_seam();
         remove_vertical_seam(image, &seam)
     }
 }

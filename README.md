@@ -75,6 +75,16 @@ image as u32, but we know damn well that under the covers it's really a
 usize-mapped index into a vec.  Making that work repeatedly is the big
 challenge.
 
+## TODO
+
+- Make "energytoseam" a trait.
+- Separate the trait into its own module.
+- Write AviShaTwo (forward energy)
+- Look at other algorithms in AviShaOne
+- implement caching.
+- implement hori/vert mirrors.
+- implement threading.
+- Begin C implementation of AviShaOne
 
 ## Features
 

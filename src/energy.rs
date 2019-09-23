@@ -250,26 +250,55 @@ pub fn energy_to_horizontal_seam(energy: &EnergyMap<u32>) -> Vec<u32> {
         .collect()
 }
 
-/// A convenience wrapper: Given an image, get back a vector with the
-/// next top-to-bottom seam for that image.
-pub fn calculate_vertical_seam<I, P, S>(image: &I) -> Vec<u32>
-where
-    I: GenericImageView<Pixel = P>,
-    P: Pixel<Subpixel = S> + 'static,
-    S: Primitive + 'static,
+/// This trait defines how we will return seams from an image.  It's a
+/// primitive interface, just enough to make room for multiple seam
+/// carvers as well as caching.
+pub trait ImageSeams
 {
-    energy_to_vertical_seam(&calculate_energy(image))
+    /// Once an ImageSeam object has an image (or whatever it needs to
+    /// make a rational decision), request a horizontal seam.
+    fn horizontal_seam(&self) -> Vec<u32>;
+
+    /// Request a vertical seam.
+    fn vertical_seam(&self) -> Vec<u32>;
 }
 
-/// A convenience wrapper: Given an image, get back a vector with the
-/// next left-to-write seam for that image.
-pub fn calculate_horizontal_seam<I, P, S>(image: &I) -> Vec<u32>
+
+/// The basic seam enigen: just a simple image reference holder.
+pub struct AviShaOne<'a, I, P, S>
 where
     I: GenericImageView<Pixel = P>,
     P: Pixel<Subpixel = S> + 'static,
-    S: Primitive + 'static,
+    S: Primitive + 'static
 {
-    energy_to_horizontal_seam(&calculate_energy(image))
+    image: &'a I
+}
+
+impl<'a, I, P, S> AviShaOne<'a, I, P, S> 
+where
+    I: GenericImageView<Pixel = P>,
+    P: Pixel<Subpixel = S> + 'static,
+    S: Primitive + 'static
+{
+    /// Takes a reference to an image, and holds onto it.
+    pub fn new(image: &'a I) -> Self {
+        AviShaOne{ image }
+    }
+}
+
+impl<'a, I, P, S> ImageSeams for AviShaOne<'a, I, P, S>
+where
+    I: GenericImageView<Pixel = P>,
+    P: Pixel<Subpixel = S> + 'static,
+    S: Primitive + 'static
+{
+    fn horizontal_seam(&self) -> Vec<u32> {
+        energy_to_horizontal_seam(&calculate_energy(self.image))
+    }
+
+    fn vertical_seam(&self) -> Vec<u32> {
+        energy_to_vertical_seam(&calculate_energy(self.image))
+    }
 }
 
 #[cfg(test)]
