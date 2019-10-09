@@ -10,6 +10,7 @@
 //! forward energy calculation, although that is coming.
 
 use crate::cq;
+use crate::imageseams::ImageSeams;
 use image::{GenericImageView, Pixel, Primitive};
 use num_traits::NumCast;
 // use num_cpus;
@@ -28,7 +29,6 @@ pub struct EnergyMap<P: Default + Copy> {
 }
 
 impl<P: Default + Copy> EnergyMap<P> {
-
     /// Define a new (abstract) energy map.  The content type must
     /// implement the Default trait.
     pub fn new(width: u32, height: u32) -> Self {
@@ -250,39 +250,25 @@ pub fn energy_to_horizontal_seam(energy: &EnergyMap<u32>) -> Vec<u32> {
         .collect()
 }
 
-/// This trait defines how we will return seams from an image.  It's a
-/// primitive interface, just enough to make room for multiple seam
-/// carvers as well as caching.
-pub trait ImageSeams
-{
-    /// Once an ImageSeam object has an image (or whatever it needs to
-    /// make a rational decision), request a horizontal seam.
-    fn horizontal_seam(&self) -> Vec<u32>;
-
-    /// Request a vertical seam.
-    fn vertical_seam(&self) -> Vec<u32>;
-}
-
-
 /// The basic seam enigen: just a simple image reference holder.
 pub struct AviShaOne<'a, I, P, S>
 where
     I: GenericImageView<Pixel = P>,
     P: Pixel<Subpixel = S> + 'static,
-    S: Primitive + 'static
+    S: Primitive + 'static,
 {
-    image: &'a I
+    image: &'a I,
 }
 
-impl<'a, I, P, S> AviShaOne<'a, I, P, S> 
+impl<'a, I, P, S> AviShaOne<'a, I, P, S>
 where
     I: GenericImageView<Pixel = P>,
     P: Pixel<Subpixel = S> + 'static,
-    S: Primitive + 'static
+    S: Primitive + 'static,
 {
     /// Takes a reference to an image, and holds onto it.
     pub fn new(image: &'a I) -> Self {
-        AviShaOne{ image }
+        AviShaOne { image }
     }
 }
 
@@ -290,7 +276,7 @@ impl<'a, I, P, S> ImageSeams for AviShaOne<'a, I, P, S>
 where
     I: GenericImageView<Pixel = P>,
     P: Pixel<Subpixel = S> + 'static,
-    S: Primitive + 'static
+    S: Primitive + 'static,
 {
     fn horizontal_seam(&self) -> Vec<u32> {
         energy_to_horizontal_seam(&calculate_energy(self.image))
@@ -341,5 +327,4 @@ mod tests {
         let expected = [0, 1, 0, 1, 2];
         assert_eq!(energy_to_horizontal_seam(&energies), expected);
     }
-
 }

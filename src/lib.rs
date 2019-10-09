@@ -15,10 +15,29 @@
 
 extern crate image;
 
+// A proxy for a generic image that rotates processing by 90 so that
+// intermediate models can be safely sliced up for multi-threaded
+// processing.
+mod flipper;
+
+// Trait defining how an image becomes a seam.
+mod imageseams;
+
+// Some simple macros
 mod ternary;
 
-pub mod energy;
-pub use energy::{energy_to_horizontal_seam, energy_to_vertical_seam};
+// A generic two-dimensional map, used to hold intermediate data.
+mod twodmap;
 
+// The original algorithm by Avidan and Shamir.
+pub mod avisha1;
+pub use avisha1::AviShaOne;
+
+// The "forward energy" algorithm by Avidan and Shamir.
+pub mod avisha2;
+pub use avisha2::AviShaTwo;
+
+// Takes an Image and an ImageSeam and produces a new image with a seam
+// carved out.
 pub mod seamcarver;
 pub use seamcarver::seamcarve;

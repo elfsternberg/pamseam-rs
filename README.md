@@ -18,9 +18,9 @@ as a compile-time option.
 
 ## NOTICE
 
-This is a design document at this point.  *None* of what is described
-below is currently possible with the current code base. The intent is to
-start small and build out a complete Rust solution, and then port to C.
+This is very much a work in progress.  The above commands do not
+work, and the output filename is hard-coded for testing purposes.
+That said, the AviSha1 and AviSha2 algorithms work as advertised.
 
 ## Description
 

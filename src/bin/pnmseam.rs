@@ -1,11 +1,9 @@
 use pnmseam::seamcarve;
-use std::io;
 
 extern crate clap;
 extern crate image;
 
 use clap::{App, Arg};
-use image::ColorType;
 
 fn main() {
     let matches = App::new("pnmseam")
