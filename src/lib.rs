@@ -29,6 +29,10 @@ mod ternary;
 // A generic two-dimensional map, used to hold intermediate data.
 mod twodmap;
 
+// Functions to calculate the energy distance between
+// two pixel pairs, using a variety of methods.
+pub mod pixelpairs;
+
 // The original algorithm by Avidan and Shamir.
 pub mod avisha1;
 pub use avisha1::AviShaOne;

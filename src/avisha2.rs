@@ -11,34 +11,11 @@
 //! forward energy calculation, although that is coming.
 
 use crate::flipper::Flipper;
+use crate::pixelpairs::energy_of_pair_luma as energy_of_pixel_pair;
 use crate::seamfinder::SeamFinder;
 use crate::twodmap::{EnergyAndBackPointer, TwoDimensionalMap};
+
 use image::{GenericImageView, Pixel, Primitive};
-use num_traits::NumCast;
-use std::convert::TryInto;
-
-// TODO: Break this out into its own module, and abstract it to work
-// with other algorithms (square root, RGB-specific, etc.)
-
-// (Pixel, Pixel) -> Energy
-fn energy_of_pixel_pair<P, S>(p1: &P, p2: &P) -> u32
-where
-	P: Pixel<Subpixel = S> + 'static,
-	S: Primitive + 'static,
-{
-	#[inline]
-	fn lumachannel<S, P>(p: &P) -> i32
-	where
-		P: Pixel<Subpixel = S> + 'static,
-		S: Primitive + 'static,
-	{
-		let c = p.to_luma().channels().to_owned();
-		NumCast::from(c[0]).unwrap()
-	}
-
-	let css = lumachannel(p1) - lumachannel(p2);
-	(css * css).try_into().unwrap()
-}
 
 type EnergyMap = TwoDimensionalMap<EnergyAndBackPointer<u32>>;
 

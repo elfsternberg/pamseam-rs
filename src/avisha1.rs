@@ -10,32 +10,11 @@
 //! forward energy calculation, although that is coming.
 
 use crate::cq;
+use crate::pixelpairs::energy_of_pair_luma as energy_of_pixel_pair;
 use crate::seamfinder::SeamFinder;
 use crate::twodmap::{EnergyAndBackPointer, TwoDimensionalMap};
 use image::{GenericImageView, Pixel, Primitive};
-use num_traits::NumCast;
 // use num_cpus;
-
-// (Pixel, Pixel) -> Energy
-#[inline]
-fn energy_of_pair<P, S>(p1: &P, p2: &P) -> u32
-where
-	P: Pixel<Subpixel = S> + 'static,
-	S: Primitive + 'static,
-{
-	#[inline]
-	fn lumachannel<S, P>(p: &P) -> u32
-	where
-		P: Pixel<Subpixel = S> + 'static,
-		S: Primitive + 'static,
-	{
-		let c = p.to_luma().channels().to_owned();
-		NumCast::from(c[0]).unwrap()
-	}
-
-	let css = lumachannel(p1) - lumachannel(p2);
-	css * css
-}
 
 // TODO : How do we carve this up into uniform segments? The cheapest
 // is to route around the energymap; divvy it up into width segments,
@@ -69,8 +48,8 @@ where
 				cq!(y == 0, current_pixel, image.get_pixel(x, y - 1)),
 				cq!(y >= mh, current_pixel, image.get_pixel(x, y + 1)),
 			);
-			emap[(x, y)] =
-				energy_of_pair(&leftpixel, &rightpixel) + energy_of_pair(&uppixel, &downpixel);
+			emap[(x, y)] = energy_of_pixel_pair(&leftpixel, &rightpixel)
+				+ energy_of_pixel_pair(&uppixel, &downpixel);
 		}
 	}
 	emap
