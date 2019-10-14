@@ -21,7 +21,7 @@ extern crate image;
 mod flipper;
 
 // Trait defining how an image becomes a seam.
-mod imageseams;
+mod seamfinder;
 
 // Some simple macros
 mod ternary;
