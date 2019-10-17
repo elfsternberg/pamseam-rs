@@ -1,4 +1,4 @@
-use pnmseam::seamcarve;
+use pnmseam::SeamCarver;
 
 extern crate clap;
 extern crate image;
@@ -19,6 +19,7 @@ fn main() {
         .get_matches();
 
     let image = image::open(matches.value_of("imagefile").unwrap()).unwrap();
-    let newimage = seamcarve(&image, 896, 1079).unwrap();
+    let carver = SeamCarver::new(&image);
+    let newimage = carver.carve(896, 1079).unwrap();
     newimage.save("test-resize.png").unwrap();
 }

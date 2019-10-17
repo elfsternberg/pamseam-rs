@@ -44,4 +44,4 @@ pub use avisha2::AviShaTwo;
 // Takes an Image and an ImageSeam and produces a new image with a seam
 // carved out.
 pub mod seamcarver;
-pub use seamcarver::seamcarve;
+pub use seamcarver::SeamCarver;

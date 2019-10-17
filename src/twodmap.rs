@@ -49,10 +49,8 @@ impl<P: Default + Copy> IndexMut<(u32, u32)> for TwoDimensionalMap<P> {
     }
 }
 
-
 #[derive(Default, Debug, Copy, Clone)]
 pub(crate) struct EnergyAndBackPointer<P: Default + Copy> {
     pub energy: P,
     pub parent: u32,
 }
-

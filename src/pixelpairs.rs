@@ -23,19 +23,19 @@ pub type PixelPair<P> = dyn Fn(&P, &P) -> u32;
 #[inline]
 pub fn energy_of_pair_luma<P, S>(p1: &P, p2: &P) -> u32
 where
-	P: Pixel<Subpixel = S> + 'static,
-	S: Primitive + 'static,
+    P: Pixel<Subpixel = S> + 'static,
+    S: Primitive + 'static,
 {
-	#[inline]
-	fn lumachannel<S, P>(p: &P) -> u32
-	where
-		P: Pixel<Subpixel = S> + 'static,
-		S: Primitive + 'static,
-	{
-		let c = p.to_luma().channels().to_owned();
-		NumCast::from(c[0]).unwrap()
-	}
+    #[inline]
+    fn lumachannel<S, P>(p: &P) -> u32
+    where
+        P: Pixel<Subpixel = S> + 'static,
+        S: Primitive + 'static,
+    {
+        let c = p.to_luma().channels().to_owned();
+        NumCast::from(c[0]).unwrap()
+    }
 
-	let css = lumachannel(p1) - lumachannel(p2);
-	css * css
+    let css = lumachannel(p1) - lumachannel(p2);
+    css * css
 }
