@@ -1,0 +1,3 @@
+[submodule "seam-lattice"]
+	path = seam-lattice
+	url = https://github.com/elfsternberg/seam-lattice
