@@ -14,32 +14,7 @@
 //! examples.
 
 extern crate image;
-
-// A proxy for a generic image that rotates processing by 90 so that
-// intermediate models can be safely sliced up for multi-threaded
-// processing.
-mod flipper;
-
-// Trait defining how an image becomes a seam.
-mod seamfinder;
-
-// Some simple macros
-mod ternary;
-
-// A generic two-dimensional map, used to hold intermediate data.
-mod twodmap;
-
-// Functions to calculate the energy distance between
-// two pixel pairs, using a variety of methods.
-pub mod pixelpairs;
-
-// The original algorithm by Avidan and Shamir.
-pub mod avisha1;
-pub use avisha1::AviShaOne;
-
-// The "forward energy" algorithm by Avidan and Shamir.
-pub mod avisha2;
-pub use avisha2::AviShaTwo;
+extern crate seam_lattice;
 
 // Takes an Image and an ImageSeam and produces a new image with a seam
 // carved out.
